@@ -18,6 +18,8 @@ _utils = Extension('sstsne._utils',
 
 _barnes_hut_tsne = Extension('sstsne._barnes_hut_tsne',
                              sources=['sstsne/_barnes_hut_tsne.pyx'],
+                             extra_link_args=["-lblas"],
+                             extra_compile_args=['-lblas'],
                              include_dirs=[numpy.get_include(), '/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers/']
                                          +[p for p in os.environ.get('INCLUDE','').split(':') if p])
 
@@ -47,15 +49,10 @@ configuration = {
         'Programming Language :: Python :: 3.4',
     ],
     'keywords' : 'tsne semi-supervised dimension reduction',
-    'url' : 'http://github.com/lmcinnes/sstsne',
-    'maintainer' : 'Leland McInnes',
-    'maintainer_email' : 'leland.mcinnes@gmail.com',
-    'license' : 'BSD',
     'packages' : ['sstsne'],
     'install_requires' : ['scikit-learn>=0.17.1',
                           'cython >= 0.17'],
-    'ext_modules' : [_utils,
-                     _barnes_hut_tsne],
+    'ext_modules' : cythonize([_utils, _barnes_hut_tsne]),
     'cmdclass' : {'build_ext' : build_ext},
     'test_suite' : 'nose.collector',
     'tests_require' : ['nose'],
