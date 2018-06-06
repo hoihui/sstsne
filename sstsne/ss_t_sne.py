@@ -26,7 +26,6 @@ from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import pairwise_distances
 from . import _utils
 from . import _barnes_hut_tsne
-from sklearn.utils.fixes import astype
 
 
 MACHINE_EPSILON = np.finfo(np.double).eps
@@ -67,8 +66,8 @@ def _joint_probabilities(distances, labels, label_importance, rep_sample,
     """
     # Compute conditional probabilities such that they approximately match
     # the desired perplexity
-    distances = astype(distances, np.float32, copy=False)
-    labels = astype(labels, np.int64, copy=False)
+    distances = np.float32(distances)
+    labels = np.int64(labels)
     conditional_P = _utils._binary_search_perplexity(
         distances, None, labels, label_importance,
         rep_sample, desired_perplexity, verbose)
@@ -118,9 +117,9 @@ def _joint_probabilities_nn(distances, neighbors, labels, label_importance,
     """
     # Compute conditional probabilities such that they approximately match
     # the desired perplexity
-    distances = astype(distances, np.float32, copy=False)
-    labels = astype(labels, np.int64, copy=False)
-    neighbors = astype(neighbors, np.int64, copy=False)
+    distances = np.float32(distances)
+    labels = np.int64(labels)
+    neighbors = np.int64(neighbors)
     conditional_P = _utils._binary_search_perplexity(
         distances, neighbors, labels, label_importance,
         rep_sample, desired_perplexity, verbose)
@@ -307,9 +306,9 @@ def _kl_divergence_bh(params, P, neighbors, degrees_of_freedom, n_samples,
         Unraveled gradient of the Kullback-Leibler divergence with respect to
         the embedding.
     """
-    params = astype(params, np.float32, copy=False)
+    params = np.float32(params)
     X_embedded = params.reshape(n_samples, n_components)
-    neighbors = astype(neighbors, np.int64, copy=False)
+    neighbors = np.int64(neighbors)
     if len(P.shape) == 1:
         sP = squareform(P).astype(np.float32)
     else:
