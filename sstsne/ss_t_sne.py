@@ -19,7 +19,9 @@ from sklearn.neighbors import BallTree
 from sklearn.base import BaseEstimator
 from sklearn.utils import check_array
 from sklearn.utils import check_random_state
-from sklearn.utils.extmath import _ravel
+# from sklearn.utils.extmath import _ravel
+from functools import partial
+_ravel = partial(np.ravel, order='K')
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import pairwise_distances
 from . import _utils
