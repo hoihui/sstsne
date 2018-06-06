@@ -1,6 +1,7 @@
 import warnings,os
 
 try:
+    from Cython.Build import cythonize
     from Cython.Distutils import build_ext
     from setuptools import setup, Extension
     HAVE_CYTHON = True
